@@ -1,0 +1,60 @@
+---
+# Source: icarus/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: "basics-basics"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    name: "basics-basics"
+---
+# Source: icarus/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "basics-basics"
+  namespace: default
+  labels:
+    name: "basics-basics"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: "basics-basics"
+  template:
+    metadata:
+      labels:
+        name: "basics-basics"
+    spec:
+      containers:
+        - name: "worker"
+          image: "pennlabs/pennbasics:latest"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+          envFrom:
+            - secretRef:
+                name: basics
+---
+# Source: icarus/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: basics-basics
+  namespace: default
+spec:
+  rules:
+    - host: "pennbasics.com"
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: basics-basics
+              servicePort: 80
+---
+# Source: icarus/templates/tests/test-connection.yaml
+# we don't do those here

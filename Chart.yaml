@@ -1,5 +1,5 @@
 apiVersion: v2
-name: Icarus
+name: icarus
 description: A generic helm chart that acts as the platform for Penn Labs
 
 # A chart can be either an 'application' or a 'library' chart.

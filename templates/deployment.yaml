@@ -1,26 +1,26 @@
-{{- $release := .Release.name }}
-{{- $releasens := .Release.namespace }}
+{{- $release := .Release.Name }}
+{{- $releasens := .Release.Namespace }}
 {{- $defaults := .Values.defaults }}
 {{- $image_tag := .Values.image_tag }}
 
 {{- range .Values.applications }}
-{{- $app_id := $release "-" .name }}
+{{- $app_id := printf "%s-%s" $release .name}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ $app_id }}
+  name: {{ $app_id | quote }}
   namespace: {{ $releasens }}
   labels:
-    name: {{ $app_id }}
+    name: {{ $app_id | quote }}
 spec:
   replicas: {{ .replicas | default $defaults.replicas }}
   selector:
     matchLabels:
-      name: {{ $app_id }}
+      name: {{ $app_id | quote }}
   template:
     metadata:
       labels:
-        name: {{ $app_id }}
+        name: {{ $app_id | quote }}
     spec:
       containers:
         - name: "worker"
@@ -33,8 +33,8 @@ spec:
             - secretRef:
                 name: {{ .secret }}
           {{- end }}
-          env:
           {{- if .extraEnv }}
+          env:
           {{- range .extraEnv }}
             - name: {{ .name | quote }}
               value: {{ .value | quote }}
