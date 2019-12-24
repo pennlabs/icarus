@@ -9,6 +9,7 @@ The only global configuration option is `image_tag`. This can be used to set all
 For configuring each application, put them under the `applications` section, providing any configuration you wish to override from the `defaults` item in `values.yaml`. Here is an example service that has one public-facing application and one internal one:
 
 ```yaml
+deploy_version: 0.1.0
 image_tag: latest
 
 applications:
@@ -22,4 +23,3 @@ applications:
   - name: 2048
     image: alexwhen/docker-2048
 ```
-
