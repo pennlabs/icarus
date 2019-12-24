@@ -1,0 +1,43 @@
+{{- $release := .Release.name }}
+{{- $releasens := .Release.namespace }}
+{{- $defaults := .Values.defaults }}
+{{- $image_tag := .Values.image_tag }}
+
+{{- range .Values.applications }}
+{{- $app_id := $release "-" .name }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $app_id }}
+  namespace: {{ $releasens }}
+  labels:
+    name: {{ $app_id }}
+spec:
+  replicas: {{ .replicas | default $defaults.replicas }}
+  selector:
+    matchLabels:
+      name: {{ $app_id }}
+  template:
+    metadata:
+      labels:
+        name: {{ $app_id }}
+    spec:
+      containers:
+        - name: "worker"
+          image: "{{ .image }}:{{ .tag | default $image_tag }}"
+          imagePullPolicy: {{ .pullPolicy | default $defaults.pullPolicy }}
+          ports:
+            - containerPort: {{ .port | default $defaults.port }}
+          {{- if .secret }}
+          envFrom:
+            - secretRef:
+                name: {{ .secret }}
+          {{- end }}
+          env:
+          {{- if .extraEnv }}
+          {{- range .extraEnv }}
+            - name: {{ .name | quote }}
+              value: {{ .value | quote }}
+          {{- end }}
+          {{- end }}
+{{- end }}

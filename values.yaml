@@ -1,0 +1,9 @@
+applications: []
+
+image_tag: latest
+
+defaults:
+  replicas: 1
+  pullPolicy: IfNotPresent
+  port: 80
+  svc_type: ClusterIP
