@@ -25,7 +25,7 @@ spec:
           - path: {{ . }}
             backend:
               serviceName: {{ $app_id }}
-              servicePort: 80
+              servicePort: {{ .port | default $defaults.port }}
         {{- end }}
   {{- end }}
 {{- end }}
