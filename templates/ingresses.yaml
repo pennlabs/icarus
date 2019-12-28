@@ -1,5 +1,6 @@
 {{- $release := .Release.Name }}
 {{- $releasens := .Release.Namespace }}
+{{- $defaults := .Values.defaults }}
 
 {{- range .Values.applications }}
 {{- $app_id := printf "%s-%s" $release .name}}
