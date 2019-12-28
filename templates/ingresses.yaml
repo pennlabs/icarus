@@ -3,7 +3,7 @@
 {{- $defaults := .Values.defaults }}
 
 {{- range .Values.applications }}
-{{- $port := .port }}
+{{- $port := .port | default $defaults.port }}
 {{- $app_id := printf "%s-%s" $release .name}}
 {{- if .ingress -}}
 apiVersion: networking.k8s.io/v1beta1
@@ -27,7 +27,7 @@ spec:
           - path: {{ . }}
             backend:
               serviceName: {{ $app_id }}
-              servicePort: {{ $port | default $defaults.port }}
+              servicePort: {{ $port }}
         {{- end }}
   {{- end }}
 {{- end }}
