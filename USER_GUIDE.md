@@ -31,7 +31,7 @@ Per-application configuration:
 Example configuration with one public-facing application application and one in-cluster application:
 
 ```yaml
-deploy_version: 0.1.4
+deploy_version: 0.1.5
 
 applications:
   - name: basics
@@ -41,7 +41,12 @@ applications:
       hosts:
         - host: pennbasics.com
           paths: ["/"]
-  - name: 2048
+  - name: redis
     tag: latest
+    port: 6379
     image: alexwhen/docker-2048
 ```
+
+## Accessing applications in-cluster
+
+If you want one application to access another solely inside the cluster, you can reference it with it's "App ID". Icarus creates app IDs of the form `<repo_name>-<app_name>`. For example, if you wanted to access the redis in the above example in the `pennbasics` repository, you would access it with the url `pennbasics-redis:6379`.
