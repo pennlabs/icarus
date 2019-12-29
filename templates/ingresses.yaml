@@ -11,8 +11,8 @@ kind: Ingress
 metadata:
   name: {{ $app_id }}
   namespace: {{ $releasens }}
-  {{- if .annotations }}
-  {{- with .annotations }}
+  {{- if .ingress.annotations }}
+  {{- with .ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
