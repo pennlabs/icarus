@@ -44,7 +44,7 @@ applications:
   - name: redis
     tag: latest
     port: 6379
-    image: alexwhen/docker-2048
+    image: redis
 ```
 
 ## Accessing applications in-cluster
