@@ -1,3 +1,5 @@
+# Icarus has been moved to [helm charts](https://github.com/pennlabs/helm-charts/tree/master/icarus).
+
 # Icarus
 
 Icarus is the base helm chart for deployments for Penn Labs. This chart provides sane defaults for creating ingresses, services, and deployments.
