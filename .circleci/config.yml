@@ -1,0 +1,15 @@
+version: 2.1
+orbs:
+  helm-tools: pennlabs/helm-tools@0.0.4
+
+workflows:
+  build-and-publish:
+    jobs:
+      - helm-tools/publish-helm:
+          chart-org: pennlabs
+          chart-repo: helm-charts
+          context: git-bot
+          filters:
+            branches:
+              only:
+                - master
