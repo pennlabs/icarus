@@ -5,7 +5,7 @@ orbs:
 workflows:
   build-and-publish:
     jobs:
-      - helm-tools/publish-helm:
+      - helm-tools/helm-publish:
           chart-org: pennlabs
           chart-repo: helm-charts
           context: git-bot
