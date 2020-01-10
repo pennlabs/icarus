@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  helm-tools: pennlabs/helm-tools@0.0.6
+  helm-tools: pennlabs/helm-tools@0.1.0
 
 workflows:
   build-and-publish:
