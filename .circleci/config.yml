@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  helm-tools: pennlabs/helm-tools@0.1.2
+  helm-tools: pennlabs/helm-tools@0.1.6
 
 workflows:
   build-and-publish:
@@ -8,6 +8,7 @@ workflows:
       - helm-tools/helm-publish:
           chart-org: pennlabs
           chart-repo: helm-charts
+          git-branch: master
           context: git-bot
           filters:
             branches:
