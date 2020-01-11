@@ -1,10 +1,16 @@
-deploy_version: 0.1.0
+deploy_version: 0.1.9
 image_tag: latest
 
 applications:
   - name: basics
     image: pennlabs/pennbasics
+    cmd:
+      - test
+      - hi
     secret: basics
+    secretMounts:
+      - name: basics
+        path: /etc/nginx/secrets
     ingress:
       hosts:
         - host: pennbasics.com

@@ -26,12 +26,25 @@ spec:
         - name: "worker"
           image: "{{ .image }}:{{ .tag | default $image_tag }}"
           imagePullPolicy: {{ .pullPolicy | default $defaults.pullPolicy }}
+          {{- if .cmd }}
+          cmd:
+          {{- range .cmd }}
+            - {{ . }}
+          {{- end }}
+          {{- end }}
           ports:
             - containerPort: {{ .port | default $defaults.port }}
           {{- if .secret }}
           envFrom:
             - secretRef:
                 name: {{ .secret }}
+          {{- end }}
+          {{- if .secretMounts }}
+          volumeMounts:
+          {{- range .secretMounts }}
+            - name: "{{ .name }}"
+              mountPath: {{ .path | quote }}
+          {{- end }}
           {{- end }}
           {{- if .extraEnv }}
           env:
@@ -40,4 +53,12 @@ spec:
               value: {{ .value | quote }}
           {{- end }}
           {{- end }}
+      {{- if .secretMounts }}
+      volumes:
+      {{- range .secretMounts }}
+        - name: "{{ .name }}"
+          secret:
+            secretName: {{ .name | quote }}
+      {{- end }}
+      {{- end }}
 {{- end }}

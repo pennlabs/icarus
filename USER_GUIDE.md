@@ -18,6 +18,10 @@ Per-application configuration:
 - `name` (Required) - name to give your application
 - `image` (Required) - image to use for your application
 - `secret` (Optional, default `null`) - Secret from Vault to use for your application
+- `cmd` (Optional, default `null`) - Command to override docker entrypoint. Provide a list of arguments for the command.
+- `secretMounts` (Optional, default `null`) - list of secrets to mount as directories 
+    - `name` (Required) - name of secret
+    - `path` (Required) - path to mount secret in | *WARNING*: This will wipe whatever files you previously had in that path. All secrets will be present in `<path>/<secret_item>`.
 - `replicas` (Optional, default `1`) - number of instances of your application to be run in the cluster
 - `pullPolicy` (Optional, default `IfNotPresent`) - what type of [ImagePullPolicy](https://kubernetes.io/docs/concepts/containers/images/#updating-images) to use
 - `port` (Optional, default `80`) - what port your application exposes
