@@ -10,7 +10,8 @@ applications:
     secret: basics
     secretMounts:
       - name: basics
-        path: /etc/nginx/secrets
+        path: /etc/nginx/secrets/cert.pem
+        item: cert.pem
     ingress:
       hosts:
         - host: pennbasics.com
