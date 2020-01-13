@@ -6,6 +6,7 @@
 {{- $port := .port | default $defaults.port }}
 {{- $app_id := printf "%s-%s" $release .name}}
 {{- if .ingress -}}
+---
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:

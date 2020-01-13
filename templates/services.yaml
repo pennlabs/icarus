@@ -4,6 +4,7 @@
 
 {{- range .Values.applications }}
 {{- $app_id := printf "%s-%s" $release .name }}
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -15,4 +16,4 @@ spec:
       targetPort: {{ .port | default $defaults.port }}
   selector:
     name: {{ $app_id | quote }}
-{{- end }}
+{{ end }}

@@ -5,6 +5,7 @@
 
 {{- range .Values.applications }}
 {{- $app_id := printf "%s-%s" $release .name}}
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -65,4 +66,4 @@ spec:
                 path: {{ .item | quote }}
       {{- end }}
       {{- end }}
-{{- end }}
+{{ end }}
