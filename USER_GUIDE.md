@@ -10,13 +10,14 @@ To get started with an Icarus project, we recommend you start from one of the [t
 
 Below is a full list of configuration options and their default values.
 
-- `deploy_version` (Required) - Specifies which tag of Icarus to use. To get a list of tags, go to [the Icarus Github repo](https://github.com/pennlabs/icarus/) and click "Releases". Use the most recent one if you're not sure which to use.
+- `deploy_version` (Required) - Specifies which tag of Icarus to use. To get a list of tags, go to [the Icarus releases](https://github.com/pennlabs/icarus/releases). Use the most recent one if you're not sure which to use.
 - `applications` (Required) - A list of applications to run with Icarus.
 
 Per-application configuration:
 
 - `name` (Required) - name to give your application
 - `image` (Required) - image to use for your application
+- `tag` (Optional, defaults to CircleCI SHA1) - tag to use for your image
 - `secret` (Optional, default `null`) - Secret from Vault to use for your application
 - `cmd` (Optional, default `null`) - Command to override docker entrypoint. Provide a list of arguments for the command.
 - `secretMounts` (Optional, default `null`) - list of secrets to mount as directories 
