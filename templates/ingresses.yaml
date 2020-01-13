@@ -24,11 +24,11 @@ spec:
       http:
         paths:
         {{- range .paths }}
-          - path: {{ . }}
+          - path: {{ . | quote }}
             backend:
               serviceName: {{ $app_id }}
               servicePort: {{ $port }}
         {{- end }}
   {{- end }}
 {{- end }}
-{{- end }}
+{{ end }} ## THIS NEEDS TO BE A NEWLINE OR ELSE INGRESSES WILL STACK ON TOP OF EACH OTHER
