@@ -25,6 +25,9 @@ Per-application configuration:
     - `path` (Required) - path to mount secret item in
 - `replicas` (Optional, default `1`) - number of instances of your application to be run in the cluster
 - `pullPolicy` (Optional, default `IfNotPresent`) - what type of [ImagePullPolicy](https://kubernetes.io/docs/concepts/containers/images/#updating-images) to use
+- `extraEnv` (Optional, default `null`) - list of extra environment variables to export
+    - `name` (Required) - environment variable name
+    - `value` (Required) - environment variable value
 - `port` (Optional, default `80`) - what port your application exposes
 - `svc_type` (Optional, default `ClusterIP`) - what [service type](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types) to use for your application. Ask someone on Platform before overriding this.
 - `ingress` (Optional, default `null`) - spec for allowing external users to access your application
