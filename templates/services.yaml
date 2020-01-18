@@ -1,8 +1,9 @@
+{{- include "setApps" . }}
+
 {{- $release := .Release.Name }}
 {{- $releasens := .Release.Namespace }}
-{{- $defaults := .Values.defaults }}
 
-{{- range .Values.applications }}
+{{- range .apps }}
 {{- $app_id := printf "%s-%s" $release .name }}
 ---
 apiVersion: v1
@@ -10,10 +11,10 @@ kind: Service
 metadata:
   name: {{ $app_id | quote }}
 spec:
-  type: {{ .svc_type | default $defaults.svc_type }}
+  type: {{ .svc_type }}
   ports:
-    - port: {{ .port | default $defaults.port }}
-      targetPort: {{ .port | default $defaults.port }}
+    - port: {{ .port }}
+      targetPort: {{ .port }}
   selector:
     name: {{ $app_id | quote }}
 {{ end }}
