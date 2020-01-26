@@ -1,9 +1,10 @@
+{{- include "setApps" . }}
+
 {{- $release := .Release.Name }}
 {{- $releasens := .Release.Namespace }}
-{{- $defaults := .Values.defaults }}
 
-{{- range .Values.applications }}
-{{- $port := .port | default $defaults.port }}
+{{- range .apps }}
+{{- $port := .port }}
 {{- $app_id := printf "%s-%s" $release .name}}
 {{- if .ingress -}}
 ---

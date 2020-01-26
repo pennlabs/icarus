@@ -1,9 +1,10 @@
+{{- include "setApps" . }}
+
 {{- $release := .Release.Name }}
 {{- $releasens := .Release.Namespace }}
-{{- $defaults := .Values.defaults }}
 {{- $image_tag := .Values.image_tag }}
 
-{{- range .Values.applications }}
+{{- range .apps }}
 {{- $app_id := printf "%s-%s" $release .name}}
 ---
 apiVersion: apps/v1
@@ -14,7 +15,7 @@ metadata:
   labels:
     name: {{ $app_id | quote }}
 spec:
-  replicas: {{ .replicas | default $defaults.replicas }}
+  replicas: {{ .replicas }}
   selector:
     matchLabels:
       name: {{ $app_id | quote }}
@@ -25,16 +26,16 @@ spec:
     spec:
       containers:
         - name: "worker"
-          image: "{{ .image }}:{{ .tag | default $image_tag }}"
-          imagePullPolicy: {{ .pullPolicy | default $defaults.pullPolicy }}
+          image: "{{ .image }}:{{ .tag }}"
+          imagePullPolicy: {{ .pullPolicy }}
           {{- if .cmd }}
-          cmd:
+          command:
           {{- range .cmd }}
             - {{ . }}
           {{- end }}
           {{- end }}
           ports:
-            - containerPort: {{ .port | default $defaults.port }}
+            - containerPort: {{ .port }}
           {{- if .secret }}
           envFrom:
             - secretRef:
