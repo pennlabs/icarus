@@ -28,7 +28,7 @@ spec:
           {{- end }}
           containers:
             - name: "worker"
-              image: {{ .image }}
+              image: {{ .image }}:{{ .tag }}
               imagePullPolicy: {{ .pullPolicy }}
               {{- if .cmd }}
               command:
