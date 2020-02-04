@@ -1,0 +1,70 @@
+{{- include "setCronJobs" . }}
+
+{{- $release := .Release.Name }}
+{{- $releasens := .Release.Namespace }}
+{{- $image_tag := .Values.image_tag }}
+
+{{- range .cronjobs }}
+{{- $cronjob_id := printf "%s-%s" $release .name}}
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ $cronjob_id | quote }}
+  namespace: {{ $releasens }}
+  labels:
+    name: {{ $cronjob_id | quote }}
+spec:
+  schedule: {{ .schedule | quote }}
+  successfulJobsHistoryLimit: {{ .successLimit }}
+  failedJobsHistoryLimit: {{ .failureLimit }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: {{ .restartPolicy }}
+          {{- if .serviecAccountName -}}
+          serviceAccountName: {{ .serviecAccountName }}
+          {{- end }}
+          containers:
+            - name: "worker"
+              image: {{ .image }}
+              imagePullPolicy: {{ .pullPolicy }}
+              {{- if .cmd }}
+              command:
+              {{- range .cmd }}
+                - {{ . }}
+              {{- end }}
+              {{- end }}
+              {{- if .secret }}
+              envFrom:
+                - secretRef:
+                    name: {{ .secret }}
+              {{- end }}
+              {{- if .secretMounts }}
+              volumeMounts:
+              {{- range .secretMounts }}
+                - name: "{{ .name }}-{{ .item }}"
+                  mountPath: {{ .path | quote }}
+                  subPath: {{ .item | quote }}
+              {{- end }}
+              {{- end }}
+              {{- if .extraEnv }}
+              env:
+              {{- range .extraEnv }}
+                - name: {{ .name | quote }}
+                  value: {{ .value | quote }}
+              {{- end }}
+              {{- end }}
+          {{- if .secretMounts }}
+          volumes:
+          {{- range .secretMounts }}
+            - name: "{{ .name }}-{{ .item }}"
+              secret:
+                secretName: {{ .name | quote }}
+                items:
+                  - key: {{ .item | quote }}
+                    path: {{ .item | quote }}
+          {{- end }}
+          {{- end }}
+{{ end }}
