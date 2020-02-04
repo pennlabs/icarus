@@ -1,60 +1,164 @@
 ---
-# Source: icarus/templates/service.yaml
+# Source: icarus/templates/services.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: "basics-basics"
+  name: "labs-api-server-flask"
 spec:
   type: ClusterIP
   ports:
     - port: 80
       targetPort: 80
   selector:
-    name: "basics-basics"
+    name: "labs-api-server-flask"
 ---
-# Source: icarus/templates/deployment.yaml
+# Source: icarus/templates/services.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: "labs-api-server-redis"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 6379
+      targetPort: 6379
+  selector:
+    name: "labs-api-server-redis"
+---
+# Source: icarus/templates/deployments.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: "basics-basics"
+  name: "labs-api-server-flask"
   namespace: default
   labels:
-    name: "basics-basics"
+    name: "labs-api-server-flask"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: "basics-basics"
+      name: "labs-api-server-flask"
   template:
     metadata:
       labels:
-        name: "basics-basics"
+        name: "labs-api-server-flask"
     spec:
       containers:
         - name: "worker"
-          image: "pennlabs/pennbasics:latest"
+          image: "pennlabs/labs-api-server:latest"
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
           envFrom:
             - secretRef:
-                name: basics
+                name: labs-api-server
+          volumeMounts:
+            - name: "ios_key-ios_key"
+              mountPath: "/app/ios_key.p8"
+              subPath: "ios_key"
+      volumes:
+        - name: "ios_key-ios_key"
+          secret:
+            secretName: "ios_key"
+            items:
+              - key: "ios_key"
+                path: "ios_key"
 ---
-# Source: icarus/templates/ingress.yaml
+# Source: icarus/templates/deployments.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "labs-api-server-redis"
+  namespace: default
+  labels:
+    name: "labs-api-server-redis"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: "labs-api-server-redis"
+  template:
+    metadata:
+      labels:
+        name: "labs-api-server-redis"
+    spec:
+      containers:
+        - name: "worker"
+          image: "redis:6.0rc"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 6379
+---
+# Source: icarus/templates/crontabs.yaml
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: "labs-api-server-laundry"
+  namespace: default
+  labels:
+    name: "labs-api-server-laundry"
+spec:
+  schedule: "*/15 * * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: "worker"
+              image: pennlabs/labs-api-server:latest
+              imagePullPolicy: IfNotPresent
+              command:
+                - python3
+                - cron/save_laundry_data.py
+              envFrom:
+                - secretRef:
+                    name: labs-api-server
+---
+# Source: icarus/templates/crontabs.yaml
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: "labs-api-server-gsr-notifications"
+  namespace: default
+  labels:
+    name: "labs-api-server-gsr-notifications"
+spec:
+  schedule: "20,50 * * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: "worker"
+              image: pennlabs/labs-api-server:latest
+              imagePullPolicy: IfNotPresent
+              command:
+                - python3
+                - cron/send_gsr_push_notification.py
+              envFrom:
+                - secretRef:
+                    name: labs-api-server
+---
+# Source: icarus/templates/ingresses.yaml
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: basics-basics
+  name: labs-api-server-flask
   namespace: default
 spec:
   rules:
-    - host: "pennbasics.com"
+    - host: "api.pennlabs.org"
       http:
         paths:
-          - path: /
+          - path: "/"
             backend:
-              serviceName: basics-basics
+              serviceName: labs-api-server-flask
               servicePort: 80
----
-# Source: icarus/templates/tests/test-connection.yaml
-# we don't do those here
+
+ ## THIS NEEDS TO BE A NEWLINE OR ELSE INGRESSES WILL STACK ON TOP OF EACH OTHER
