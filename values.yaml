@@ -3,13 +3,13 @@ cronjobs: []
 
 image_tag: latest
 
-application-defaults:
+application_defaults:
   replicas: 1
   pullPolicy: IfNotPresent
   port: 80
   svc_type: ClusterIP
 
-cronjob-defaults:
+cronjob_defaults:
   restartPolicy: Never
   pullPolicy: IfNotPresent
   successLimit: 1

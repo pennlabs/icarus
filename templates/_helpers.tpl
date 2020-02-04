@@ -5,7 +5,7 @@
 
 {{- range .Values.applications }}
 {{/* apply defaults to application */}}
-{{- $app := mustMerge . $.Values.application-defaults }}
+{{- $app := mustMerge . $.Values.application_defaults }}
 
 {{/* globally set app tag */}}
 {{- if not $app.tag }}
@@ -28,7 +28,7 @@
 
 {{- range .Values.cronjobs }}
 {{/* apply defaults to cronjobs */}}
-{{- $cronjob := mustMerge . $.Values.cronjob-defaults }}
+{{- $cronjob := mustMerge . $.Values.cronjob_defaults }}
 
 {{/* add defaulted cronjobs to final list */}}
 {{- $cronjobs = mustAppend $cronjobs $cronjob }}
