@@ -23,8 +23,8 @@ spec:
       template:
         spec:
           restartPolicy: {{ .restartPolicy }}
-          {{- if .serviecAccountName -}}
-          serviceAccountName: {{ .serviecAccountName }}
+          {{- if .serviceAccountName -}}
+          serviceAccountName: {{ .serviceAccountName }}
           {{- end }}
           containers:
             - name: "worker"
