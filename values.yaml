@@ -1,9 +1,16 @@
 applications: []
+cronjobs: []
 
 image_tag: latest
 
-defaults:
+application_defaults:
   replicas: 1
   pullPolicy: IfNotPresent
   port: 80
   svc_type: ClusterIP
+
+cronjob_defaults:
+  restartPolicy: Never
+  pullPolicy: IfNotPresent
+  successLimit: 1
+  failureLimit: 1
