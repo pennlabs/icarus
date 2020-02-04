@@ -1,4 +1,4 @@
-{{- define "setApps" }}
+{{- define "setDefaults" }}
 
 {{/* create list of apps */}}
 {{- $apps := list }}
@@ -19,9 +19,6 @@
 {{/* persist list of apps */}}
 {{- $_ := set . "apps" $apps }}
 
-{{- end }}
-
-{{- define "setCronJobs" }}
 
 {{/* create list of cronjobs */}}
 {{- $cronjobs := list }}

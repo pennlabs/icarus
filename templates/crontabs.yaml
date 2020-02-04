@@ -1,4 +1,4 @@
-{{- include "setCronJobs" . }}
+{{- include "setDefaults" . }}
 
 {{- $release := .Release.Name }}
 {{- $releasens := .Release.Namespace }}
