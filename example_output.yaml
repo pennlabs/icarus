@@ -136,7 +136,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: "worker"
-              image: pennlabs/labs-api-server:latest
+              image: pennlabs/labs-api-server:6.0
               imagePullPolicy: IfNotPresent
               command:
                 - python3

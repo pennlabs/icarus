@@ -27,6 +27,11 @@
 {{/* apply defaults to cronjobs */}}
 {{- $cronjob := mustMerge . $.Values.cronjob_defaults }}
 
+{{/* globally set app tag */}}
+{{- if not $cronjob.tag }}
+{{- $_ := set $cronjob "tag" $.Values.image_tag }}
+{{- end }}
+
 {{/* add defaulted cronjobs to final list */}}
 {{- $cronjobs = mustAppend $cronjobs $cronjob }}
 {{- end }}
