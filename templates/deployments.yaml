@@ -44,7 +44,7 @@ spec:
           {{- if .secretMounts }}
           volumeMounts:
           {{- range .secretMounts }}
-            - name: "{{ .name }}-{{ .item }}"
+            - name: "{{ .name | lower | replace "_" "-" }}-{{ .item | lower | replace "_" "-" }}"
               mountPath: {{ .path | quote }}
               subPath: {{ .item | quote }}
           {{- end }}
@@ -59,7 +59,7 @@ spec:
       {{- if .secretMounts }}
       volumes:
       {{- range .secretMounts }}
-        - name: "{{ .name }}-{{ .item }}"
+        - name: "{{ .name | lower | replace "_" "-" }}-{{ .item | lower | replace "_" "-" }}"
           secret:
             secretName: {{ .name | quote }}
             items:

@@ -53,16 +53,16 @@ spec:
             - secretRef:
                 name: labs-api-server
           volumeMounts:
-            - name: "ios_key-ios_key"
+            - name: "labs-api-server-ios-key"
               mountPath: "/app/ios_key.p8"
-              subPath: "ios_key"
+              subPath: "IOS_KEY"
       volumes:
-        - name: "ios_key-ios_key"
+        - name: "labs-api-server-ios-key"
           secret:
-            secretName: "ios_key"
+            secretName: "labs-api-server"
             items:
-              - key: "ios_key"
-                path: "ios_key"
+              - key: "IOS_KEY"
+                path: "IOS_KEY"
 ---
 # Source: icarus/templates/deployments.yaml
 apiVersion: apps/v1
@@ -144,6 +144,17 @@ spec:
               envFrom:
                 - secretRef:
                     name: labs-api-server
+              volumeMounts:
+                - name: "labs-api-server-ios-key"
+                  mountPath: "/app/ios_key.p8"
+                  subPath: "IOS_KEY"
+          volumes:
+            - name: "labs-api-server-ios-key"
+              secret:
+                secretName: "labs-api-server"
+                items:
+                  - key: "IOS_KEY"
+                    path: "IOS_KEY"
 ---
 # Source: icarus/templates/ingresses.yaml
 apiVersion: networking.k8s.io/v1beta1

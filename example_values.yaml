@@ -10,8 +10,8 @@ applications:
         - host: api.pennlabs.org
           paths: ["/"]
     secretMounts:
-      - name: ios_key
-        item: ios_key
+      - name: labs-api-server
+        item: IOS_KEY
         path: "/app/ios_key.p8"
   - name: redis
     image: redis
@@ -29,3 +29,7 @@ cronjobs:
     image: pennlabs/labs-api-server
     tag: "6.0"
     cmd: ["python3", "cron/send_gsr_push_notification.py"]
+    secretMounts:
+      - name: labs-api-server
+        item: IOS_KEY
+        path: "/app/ios_key.p8"
