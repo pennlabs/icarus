@@ -34,11 +34,13 @@ spec:
   {{- end }}
   tls:
   {{- range .ingress.hosts -}}
+  {{- if .issue_cert }}
   {{/* Regex to compute the apex domain */}}
   {{- $domain := regexFind "[\\w-]+\\.[\\w]+$" .host }}
     - hosts:
         - {{ .host | quote }}
       secretName: {{ $domain | replace "." "-" }}-tls
+  {{- end }}
   {{- end }}
 {{- end }}
 {{ end }}

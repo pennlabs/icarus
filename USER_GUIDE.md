@@ -35,6 +35,7 @@ Per-application configuration:
   - `hosts` (Required) - list of hosts to route to the ingress
     - `host` (Required) - hostname to route to this ingress
     - `paths` (Required) - list of paths to use for this host
+    - `issue_cert` (Optional, default `true`) - use cert-manager to issue a wildcard certificate?
     - `issuer_name` (Optional, default `wildcard-letsencrypt-prod`) - name of the cert manager Issuer to use
     - `issuer_kind` (Optional, default `ClusterIssuer`) - type of the cert manager issuer to use, either ClusterIssuer or Issuer
   - `annotations` (Optional, default null) - key/value map of annotations to customize the Ingress (do path prefix routing, etc.). Ask Platform before configuring this.

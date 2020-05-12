@@ -7,6 +7,7 @@
 {{- $app_id := printf "%s-%s" $release .name}}
 {{- if .ingress -}}
 {{- range .ingress.hosts }}
+{{- if .issue_cert }}
 {{/* Regex to compute the apex domain */}}
 {{- $domain := regexFind "[\\w-]+\\.[\\w]+$" .host }}
 ---
@@ -23,6 +24,7 @@ spec:
     name: {{ .issuer_name }}
     kind: {{ .issuer_kind }}
     group: cert-manager.io
+{{- end }}
 {{- end }}
 {{- end }}
 {{ end }}
