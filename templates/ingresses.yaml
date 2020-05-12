@@ -32,5 +32,13 @@ spec:
               servicePort: {{ $port }}
         {{- end }}
   {{- end }}
+  tls:
+  {{- range .ingress.hosts -}}
+  {{/* Regex to compute the apex domain */}}
+  {{- $domain := regexFind "[\\w-]+\\.[\\w]+$" .host }}
+    - hosts:
+        - {{ .host | quote }}
+      secretName: {{ $domain | replace "." "-" }}-tls
+  {{- end }}
 {{- end }}
-{{ end }} ## THIS NEEDS TO BE A NEWLINE OR ELSE INGRESSES WILL STACK ON TOP OF EACH OTHER
+{{ end }}
