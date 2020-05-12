@@ -20,22 +20,24 @@ Per-application configuration:
 - `tag` (Optional, defaults to CircleCI SHA1) - tag to use for your image
 - `secret` (Optional, default `null`) - Secret from Vault to use for your application
 - `cmd` (Optional, default `null`) - Command to override docker entrypoint. Provide a list of arguments for the command.
-- `secretMounts` (Optional, default `null`) - list of secrets to mount as directories 
-    - `name` (Required) - name of secret
-    - `item` (Required) - name of secret item
-    - `path` (Required) - path to mount secret item in
+- `secretMounts` (Optional, default `null`) - list of secrets to mount as directories
+  - `name` (Required) - name of secret
+  - `item` (Required) - name of secret item
+  - `path` (Required) - path to mount secret item in
 - `replicas` (Optional, default `1`) - number of instances of your application to be run in the cluster
 - `pullPolicy` (Optional, default `IfNotPresent`) - what type of [ImagePullPolicy](https://kubernetes.io/docs/concepts/containers/images/#updating-images) to use
 - `extraEnv` (Optional, default `null`) - list of extra environment variables to export
-    - `name` (Required) - environment variable name
-    - `value` (Required) - environment variable value
+  - `name` (Required) - environment variable name
+  - `value` (Required) - environment variable value
 - `port` (Optional, default `80`) - what port your application exposes
 - `svc_type` (Optional, default `ClusterIP`) - what [service type](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types) to use for your application. Ask someone on Platform before overriding this.
 - `ingress` (Optional, default `null`) - spec for allowing external users to access your application
-    - `hosts` (Required) - list of hosts to route to the ingress
-        - `host` (Required) - hostname to route to this ingress
-        - `paths` (Required) - list of paths to use for this host
-    - `annotations` (Optional, default null) - key/value map of annotations to customize the Ingress (do path prefix routing, etc.). Ask Platform before configuring this.
+  - `hosts` (Required) - list of hosts to route to the ingress
+    - `host` (Required) - hostname to route to this ingress
+    - `paths` (Required) - list of paths to use for this host
+    - `issuer_name` (Optional, default `wildcard-letsencrypt-prod`) - name of the cert manager Issuer to use
+    - `issuer_kind` (Optional, default `ClusterIssuer`) - type of the cert manager issuer to use, either ClusterIssuer or Issuer
+  - `annotations` (Optional, default null) - key/value map of annotations to customize the Ingress (do path prefix routing, etc.). Ask Platform before configuring this.
 
 Example configuration with one public-facing application application and one in-cluster application:
 
