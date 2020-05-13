@@ -2,10 +2,7 @@ applications: []
 cronjobs: []
 
 image_tag: latest
-certificate_defaults:
-  issue_certs: true
-  issuer_name: wildcard-letsencrypt-prod
-  issuer_kind: ClusterIssuer
+issuer_name: wildcard-letsencrypt-prod
 
 application_defaults:
   replicas: 1

@@ -16,10 +16,7 @@
 {{- if $app.ingress }}
 {{- range $app.ingress.hosts }}
 {{- if not .issuer_name }}
-{{- $_ := set . "issuer_name" $.Values.certificate_defaults.issuer_name }}
-{{- end }}
-{{- if not .issuer_kind }}
-{{- $_ := set . "issuer_kind" $.Values.certificate_defaults.issuer_kind }}
+{{- $_ := set . "issuer_name" $.Values.issuer_name }}
 {{- end }}
 {{- end }}
 {{- end }}
