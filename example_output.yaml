@@ -171,5 +171,47 @@ spec:
             backend:
               serviceName: labs-api-server-flask
               servicePort: 80
-
- ## THIS NEEDS TO BE A NEWLINE OR ELSE INGRESSES WILL STACK ON TOP OF EACH OTHER
+    - host: "alternativedomain.com"
+      http:
+        paths:
+          - path: "/"
+            backend:
+              serviceName: labs-api-server-flask
+              servicePort: 80
+  tls:
+    - hosts:
+        - "api.pennlabs.org"
+      secretName: pennlabs-org-tls
+    - hosts:
+        - "alternativedomain.com"
+      secretName: alternativedomain-com-tls
+---
+# Source: icarus/templates/certificates.yaml
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: alternativedomain-com
+spec:
+  secretName: alternativedomain-com-tls
+  dnsNames:
+  - "alternativedomain.com"
+  - "*.alternativedomain.com"
+  issuerRef:
+    name: wildcard-letsencrypt-prod
+    kind: ClusterIssuer
+    group: cert-manager.io
+---
+# Source: icarus/templates/certificates.yaml
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: pennlabs-org
+spec:
+  secretName: pennlabs-org-tls
+  dnsNames:
+  - "pennlabs.org"
+  - "*.pennlabs.org"
+  issuerRef:
+    name: wildcard-letsencrypt-prod
+    kind: ClusterIssuer
+    group: cert-manager.io

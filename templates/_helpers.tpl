@@ -12,6 +12,15 @@
 {{- $_ := set $app "tag" $.Values.image_tag }}
 {{- end }}
 
+{{/* Set Certificate Issuer for each host */}}
+{{- if $app.ingress }}
+{{- range $app.ingress.hosts }}
+{{- if not .issuer_name }}
+{{- $_ := set . "issuer_name" $.Values.issuer_name }}
+{{- end }}
+{{- end }}
+{{- end }}
+
 {{/* add defaulted application to final list */}}
 {{- $apps = mustAppend $apps $app }}
 {{- end }}

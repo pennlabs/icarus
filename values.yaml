@@ -2,6 +2,7 @@ applications: []
 cronjobs: []
 
 image_tag: latest
+issuer_name: wildcard-letsencrypt-prod
 
 application_defaults:
   replicas: 1

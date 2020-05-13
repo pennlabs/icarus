@@ -9,6 +9,8 @@ applications:
       hosts:
         - host: api.pennlabs.org
           paths: ["/"]
+        - host: alternativedomain.com
+          paths: ["/"]
     secretMounts:
       - name: labs-api-server
         item: IOS_KEY
