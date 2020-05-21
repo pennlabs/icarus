@@ -14,6 +14,8 @@ apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
   name: {{ $domain | replace "." "-" }}
+  annotations:
+    "helm.sh/resource-policy": keep
 spec:
   secretName: {{ $domain | replace "." "-" }}-tls
   dnsNames:
