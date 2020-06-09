@@ -9,15 +9,17 @@
 {{- range .ingress.hosts }}
 {{/* Regex to compute the apex domain */}}
 {{- $domain := regexFind "[\\w-]+\\.[\\w]+$" .host }}
+{{- $name := $domain | replace "." "-" }}
+{{- if not (lookup "cert-manager.io/v1alpha2" "Certificate" $releasens $name) }}
 ---
 apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
-  name: {{ $domain | replace "." "-" }}
+  name: {{ $name }}
   annotations:
     "helm.sh/resource-policy": keep
 spec:
-  secretName: {{ $domain | replace "." "-" }}-tls
+  secretName: {{ $name }}-tls
   dnsNames:
   - {{ $domain | quote }}
   - {{ printf "*.%s" $domain | quote }}
@@ -25,6 +27,7 @@ spec:
     name: {{ .issuer_name }}
     kind: ClusterIssuer
     group: cert-manager.io
+{{- end }}
 {{- end }}
 {{- end }}
 {{ end }}
