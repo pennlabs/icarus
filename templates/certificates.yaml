@@ -15,8 +15,6 @@ apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
   name: {{ $name }}
-  annotations:
-    "helm.sh/resource-policy": keep
 spec:
   secretName: {{ $name }}-tls-{{ $release }}
   dnsNames:
