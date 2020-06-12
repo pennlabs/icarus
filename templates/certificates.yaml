@@ -14,9 +14,9 @@
 apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
-  name: {{ $name }}
+  name: {{ $name }}-{{ $release }}
 spec:
-  secretName: {{ $name }}-tls-{{ $release }}
+  secretName: {{ $name }}-tls
   dnsNames:
     - {{ $domain | quote }}
     - {{ printf "*.%s" $domain | quote }}
