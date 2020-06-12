@@ -18,8 +18,8 @@ metadata:
 spec:
   secretName: {{ $name }}-tls-{{ $release }}
   dnsNames:
-  - {{ $domain | quote }}
-  - {{ printf "*.%s" $domain | quote }}
+    - {{ $domain | quote }}
+    - {{ printf "*.%s" $domain | quote }}
   issuerRef:
     name: {{ .issuer_name }}
     kind: ClusterIssuer

@@ -194,8 +194,8 @@ metadata:
 spec:
   secretName: alternativedomain-com-tls
   dnsNames:
-  - "alternativedomain.com"
-  - "*.alternativedomain.com"
+    - "alternativedomain.com"
+    - "*.alternativedomain.com"
   issuerRef:
     name: wildcard-letsencrypt-prod
     kind: ClusterIssuer
@@ -209,8 +209,8 @@ metadata:
 spec:
   secretName: pennlabs-org-tls
   dnsNames:
-  - "pennlabs.org"
-  - "*.pennlabs.org"
+    - "pennlabs.org"
+    - "*.pennlabs.org"
   issuerRef:
     name: wildcard-letsencrypt-prod
     kind: ClusterIssuer
