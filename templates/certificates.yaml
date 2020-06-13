@@ -18,6 +18,7 @@ metadata:
   name: {{ $name }}
   annotations:
     "helm.sh/resource-policy": keep
+spec:
   secretName: {{ $name }}-tls
   dnsNames:
     - {{ $domain | quote }}
