@@ -1,0 +1,39 @@
+{{- include "setDefaults" . }}
+
+{{- $release := .Release.Name }}
+{{- $releasens := .Release.Namespace }}
+{{- $image_tag := .Values.image_tag }}
+
+{{- range .apps }}
+{{- $app_id := printf "%s-%s" $release .name}}
+{{- if .autoscaling }}
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ $app_id | quote }}
+  namespace: {{ $releasens }}
+  labels:
+    name: {{ $app_id | quote }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ $app_id | quote }}
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 200
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: AverageValue
+          averageValue: 2Gi
+{{- end }}
+{{ end }}

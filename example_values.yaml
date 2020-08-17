@@ -5,6 +5,7 @@ applications:
   - name: flask
     image: pennlabs/labs-api-server
     secret: labs-api-server
+    autoscaling: true
     ingress:
       hosts:
         - host: api.pennlabs.org

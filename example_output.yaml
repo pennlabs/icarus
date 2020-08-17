@@ -56,6 +56,9 @@ spec:
             - name: "labs-api-server-ios-key"
               mountPath: "/app/ios_key.p8"
               subPath: "IOS_KEY"
+          resources:
+            requests:
+              cpu: "1000m"
       volumes:
         - name: "labs-api-server-ios-key"
           secret:
@@ -88,6 +91,38 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 6379
+          resources:
+            requests:
+              cpu: "1000m"
+---
+# Source: icarus/templates/hpa.yaml
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: "labs-api-server-flask"
+  namespace: default
+  labels:
+    name: "labs-api-server-flask"
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: "labs-api-server-flask"
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: AverageValue
+          averageValue: 2Gi
 ---
 # Source: icarus/templates/crontabs.yaml
 apiVersion: batch/v1beta1
@@ -190,12 +225,14 @@ spec:
 apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
-  name: alternativedomain-com
+  name: pennlabs-org
+  annotations:
+    "helm.sh/resource-policy": keep
 spec:
-  secretName: alternativedomain-com-tls
+  secretName: pennlabs-org-tls
   dnsNames:
-    - "alternativedomain.com"
-    - "*.alternativedomain.com"
+    - "pennlabs.org"
+    - "*.pennlabs.org"
   issuerRef:
     name: wildcard-letsencrypt-prod
     kind: ClusterIssuer
@@ -205,12 +242,14 @@ spec:
 apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
-  name: pennlabs-org
+  name: alternativedomain-com
+  annotations:
+    "helm.sh/resource-policy": keep
 spec:
-  secretName: pennlabs-org-tls
+  secretName: alternativedomain-com-tls
   dnsNames:
-    - "pennlabs.org"
-    - "*.pennlabs.org"
+    - "alternativedomain.com"
+    - "*.alternativedomain.com"
   issuerRef:
     name: wildcard-letsencrypt-prod
     kind: ClusterIssuer
