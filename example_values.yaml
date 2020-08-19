@@ -30,7 +30,7 @@ cronjobs:
     secret: labs-api-server
     image: pennlabs/labs-api-server
     tag: "6.0"
-    cmd: ["python3", "cron/send_gsr_push_notification.py"]
+    cmd: ["python3", "cron/send_gsr_push_notification.py", "0"]
     secretMounts:
       - name: labs-api-server
         item: IOS_KEY

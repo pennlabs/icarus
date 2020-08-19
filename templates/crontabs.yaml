@@ -33,7 +33,7 @@ spec:
               {{- if .cmd }}
               command:
               {{- range .cmd }}
-                - {{ . }}
+                - {{ . | quote }}
               {{- end }}
               {{- end }}
               {{- if .secret }}

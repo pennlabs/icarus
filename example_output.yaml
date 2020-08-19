@@ -111,8 +111,8 @@ spec:
               image: pennlabs/labs-api-server:latest
               imagePullPolicy: IfNotPresent
               command:
-                - python3
-                - cron/save_laundry_data.py
+                - "python3"
+                - "cron/save_laundry_data.py"
               envFrom:
                 - secretRef:
                     name: labs-api-server
@@ -139,8 +139,9 @@ spec:
               image: pennlabs/labs-api-server:6.0
               imagePullPolicy: IfNotPresent
               command:
-                - python3
-                - cron/send_gsr_push_notification.py
+                - "python3"
+                - "cron/send_gsr_push_notification.py"
+                - "0"
               envFrom:
                 - secretRef:
                     name: labs-api-server
@@ -191,6 +192,8 @@ apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
   name: alternativedomain-com
+  annotations:
+    "helm.sh/resource-policy": keep
 spec:
   secretName: alternativedomain-com-tls
   dnsNames:
@@ -206,6 +209,8 @@ apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
   name: pennlabs-org
+  annotations:
+    "helm.sh/resource-policy": keep
 spec:
   secretName: pennlabs-org-tls
   dnsNames:
