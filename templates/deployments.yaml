@@ -3,6 +3,7 @@
 {{- $release := .Release.Name }}
 {{- $releasens := .Release.Namespace }}
 {{- $image_tag := .Values.image_tag }}
+{{- $rbac := .Values.rbac }}
 
 {{- range .apps }}
 {{- $app_id := printf "%s-%s" $release .name}}
@@ -29,7 +30,7 @@ spec:
       labels:
         name: {{ $app_id | quote }}
     spec:
-      {{- if .rbac.createSA }}
+      {{- if $rbac.createSA }}
       serviceAccountName: {{ $release }}
       {{- end }}
       containers:
