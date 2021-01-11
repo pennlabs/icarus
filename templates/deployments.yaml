@@ -29,6 +29,9 @@ spec:
       labels:
         name: {{ $app_id | quote }}
     spec:
+      {{- if .rbac.createSA }}
+      serviceAccountName: {{ $release }}
+      {{- end }}
       containers:
         - name: "worker"
           image: "{{ .image }}:{{ .tag }}"

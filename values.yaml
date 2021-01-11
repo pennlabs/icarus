@@ -15,3 +15,7 @@ cronjob_defaults:
   pullPolicy: IfNotPresent
   successLimit: 1
   failureLimit: 1
+
+rbac:
+  createSA: false
+  roleARN: change_me
