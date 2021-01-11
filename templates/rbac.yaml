@@ -3,12 +3,12 @@
 {{- $release := .Release.Name }}
 {{- $releasens := .Release.Namespace }}
 
-{{- if .rbac.createSA }}
+{{- if .Values.rbac.createSA }}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: {{ $release }}
   namespace: {{ $releasens }}
   annotations:
-    eks.amazonaws.com/role-arn: {{ .rbac.roleARN | quote }}
+    eks.amazonaws.com/role-arn: {{ .Values.rbac.roleARN | quote }}
 {{- end }}
