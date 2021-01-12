@@ -1,0 +1,14 @@
+{{- include "setDefaults" . }}
+
+{{- $release := .Release.Name }}
+{{- $releasens := .Release.Namespace }}
+
+{{- if .Values.rbac.createSA }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ $release }}
+  namespace: {{ $releasens }}
+  annotations:
+    eks.amazonaws.com/role-arn: {{ .Values.rbac.roleARN | quote }}
+{{- end }}
