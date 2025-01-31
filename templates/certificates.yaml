@@ -10,9 +10,9 @@
 {{/* Regex to compute the apex domain */}}
 {{- $domain := regexFind "[\\w-]+\\.[\\w]+$" .host }}
 {{- $name := $domain | replace "." "-" }}
-{{- if not (lookup "cert-manager.io/v1alpha2" "Certificate" $releasens $name) }}
+{{- if not (lookup "cert-manager.io/v1" "Certificate" $releasens $name) }}
 ---
-apiVersion: cert-manager.io/v1alpha2
+apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: {{ $name }}
